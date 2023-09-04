@@ -10,6 +10,7 @@ import os.path
 
 import requests
 from requests.exceptions import SSLError
+from urllib3.exceptions import LocationParseError
 import json
 
 from sksurgerystats.common import (
@@ -192,6 +193,11 @@ if __name__ == "__main__":
                 print("SSL version or cipher mismatch error occurred:", e)
                 # Handle the error or continue with other operations
                 pass
+            except LocationParseError as e:
+                print("Got ", e, "for ", docs_target, ". It's most likely too long",
+                    len(docs_target) , " > 63")
+                pass
+
             if req.status_code == 200:
                 update_package_information(
                     package,
