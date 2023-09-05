@@ -9,7 +9,7 @@ import contextlib
 import os.path
 
 import requests
-from requests.exceptions import SSLError, ConnectionError
+from requests.exceptions import SSLError, ConnectionError, MissingSchema
 from urllib3.exceptions import LocationParseError
 import json
 
@@ -127,7 +127,7 @@ if __name__ == "__main__":
         if ci_badge is not None:
             try:
                 req = requests.get(ci_badge)
-            except ConnectionError as e:
+            except (ConnectionError, MissingSchema) as e:
                 print ("Got ", e, "when trying to get ci badge, ignoring")
                 req = bad_connection()
                 pass
@@ -144,7 +144,7 @@ if __name__ == "__main__":
         if ci_target is not None:
             try:
                 req = requests.get(ci_target)
-            except ConnectionError as e:
+            except (ConnectionError, MissingSchema) as e:
                 print ("Got ", e, "when trying to get ci target, ignoring")
                 req = bad_connection()
                 pass
